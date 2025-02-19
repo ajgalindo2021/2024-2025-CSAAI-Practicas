@@ -28,11 +28,11 @@ clear: both;
 }
 
 #c1 {
-    background-color:#aaa;
+    background-color:#54ce0d;
 }
 
-#c2 body {
-  background-image: url('duolingo.jpg');
+#c2 {
+  background-image: url(images.png);
   background-size: cover; /* Ajusta la imagen al tamaño de la pantalla */
   background-position: center; /* Centra la imagen */
   background-repeat: no-repeat; /* Evita que la imagen se repita */
