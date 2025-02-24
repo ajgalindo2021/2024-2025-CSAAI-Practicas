@@ -7,6 +7,7 @@ body {
   background-size: cover; /* Ajusta la imagen al tamaño de la pantalla */
   background-position: center; /* Centra la imagen */
   background-repeat: no-repeat; /* Evita que la imagen se repita */
+  background-attachment: fixed;
   text-align: center;
 }
 
@@ -51,14 +52,23 @@ body {
 /* Estilos para imágenes */
 img {
   width: 100%;
+  
   height: auto;
 }
 
 .iresponsive {
   padding: 0 6px;
-  float: left;
+  display: flex;
   width: 50%;
 }
+
+.separador {
+  width: 100%;
+  height: 3px;
+  background-color: rgb(182, 230, 9);
+  margin: 20px 0;
+}
+
 
 /* Responsive layout - cuando el ancho de pantalla es menor a 600px, muestra las columnas apiladas. */
 @media screen and (max-width: 600px) {
