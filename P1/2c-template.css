@@ -43,6 +43,7 @@ body {
   border-radius: 10px;
 }
  #c2 {
+  text-align: left;
   background-color: transparent;
   border: 5px solid black; /* Mismo marco para todas las secciones */
   padding: 15px;
@@ -56,10 +57,17 @@ img {
   height: auto;
 }
 
-.iresponsive {
+.foto {
   padding: 0 6px;
+  display: block;
+  height: 50%;
+}
+
+.gif {
+  padding: 5px;
   display: flex;
-  width: 50%;
+  height: 50%;
+  
 }
 
 .separador {
