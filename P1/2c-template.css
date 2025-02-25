@@ -10,7 +10,9 @@ body {
   background-attachment: fixed;
   text-align: center;
 }
-
+p {
+  color: blue;
+}
 /* Crear columnas de ancho diferente que se colocan una a continuación de la otra */
 .columna {
   float: left;
