@@ -17,6 +17,13 @@ body {
   text-decoration: underline;
   cursor: pointer;
 }
+
+.marco {
+  background-color: transparent;
+  max-height: 2000px;
+  border: 5px solid rgba(0, 0, 0, 0.75);
+  border-radius: 10px;
+}
 /* Crear columnas de ancho diferente que se colocan una a continuación de la otra */
 .columna {
   float: left;
@@ -110,3 +117,28 @@ ulx {
       width: 100%;
   }
 }
+
+@font-face {
+  font-family: 'MiFuente';
+  src: url('Saiyan-Sans.ttf') format('truetype');
+}
+
+@font-face {
+  font-family:'MiFuente2';
+  src: url('helvetica-condensed-black.otf') format('truetype');
+}
+
+h1 {
+  font-family: 'MiFuente', sans-serif;
+  font-size: 60px;
+    color: rgb(60, 255, 0);
+    text-shadow: 1px 1px 1px black;
+}
+
+h2 {
+  font-family: 'MiFuente2', sans-serif;
+  font-size: 30px;
+    color: rgb(0, 0, 0);
+    text-shadow: 1px 1px 1px black;
+}
+
