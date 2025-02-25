@@ -10,8 +10,12 @@ body {
   background-attachment: fixed;
   text-align: center;
 }
-p {
-  color: blue;
+
+
+.frase-audio {
+  color: rgb(78, 0, 129);
+  text-decoration: underline;
+  cursor: pointer;
 }
 /* Crear columnas de ancho diferente que se colocan una a continuación de la otra */
 .columna {
@@ -61,6 +65,18 @@ img {
   width: 100%;
   
   height: auto;
+}
+
+ulo {
+  list-style-image: url('tarta.png'); /* Cambia los puntos por una imagen */
+}
+
+ule {
+  list-style-image: url('gmail.png'); 
+}
+
+ulx {
+  list-style-image: url('X.png');
 }
 
 .foto {
