@@ -80,7 +80,12 @@ body {
 /* Estilos para imágenes */
 img {
   width: 100%;
-  
+  background: none;
+  height: auto;
+}
+
+.imgpersonaje {
+  width: 100px;
   height: auto;
 }
 
