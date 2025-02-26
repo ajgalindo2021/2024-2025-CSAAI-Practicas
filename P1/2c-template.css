@@ -32,6 +32,9 @@ body {
   border: 10px solid black; /* Mismo marco para todas las secciones */
   border-radius: 10px;
 }
+
+
+
 .il{
   padding-left: 15;
 }
@@ -67,6 +70,13 @@ body {
   
 }
 
+#c3 {
+  background-color: transparent;
+  border: 5px solid rgba(0, 0, 0, 0.75);
+  border-radius: 10px;
+  padding: 15px;
+}
+
 /* Estilos para imágenes */
 img {
   width: 100%;
@@ -85,6 +95,20 @@ ule {
 ulx {
   list-style-image: url('X.png');
 }
+
+
+p1 {
+  text-align: left;
+}
+
+p2{
+  text-align: center;
+}
+
+p3{
+  text-align: right;
+}
+
 
 .foto {
   padding: 0 6px;
