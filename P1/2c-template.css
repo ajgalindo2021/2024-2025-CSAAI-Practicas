@@ -85,28 +85,32 @@ img {
 }
 
 ulo {
+  text-align: left;
   list-style-image: url('tarta.png'); /* Cambia los puntos por una imagen */
+  padding: 15px;
 }
+
 
 ule {
+  text-align: left;
   list-style-image: url('gmail.png'); 
+  padding: 15px;
 }
+
 
 ulx {
-  list-style-image: url('X.png');
-}
-
-
-p1 {
   text-align: left;
+  list-style-image: url('X.png');
+  padding: 15px;
 }
 
-p2{
-  text-align: center;
-}
 
-p3{
-  text-align: right;
+
+.listapersonajes {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 20px;
 }
 
 
@@ -128,6 +132,11 @@ p3{
   height: 3px;
   background-color: rgb(182, 230, 9);
   margin: 20px 0;
+}
+
+.contenedor {
+  display: inline-block;
+  text-align: center;
 }
 
 
