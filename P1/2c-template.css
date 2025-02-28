@@ -145,7 +145,7 @@ ulx {
 img {
   max-width: 100%; /* Evita que la imagen sobresalga de su contenedor */
   height: auto; /* Mantiene la proporción de la imagen */
-  display: block;
+  display: flex;
   margin: auto;
 }
 
@@ -154,7 +154,7 @@ img {
   width: 100%; /* Se ajusta al contenedor */
   max-width: 300px; /* Tamaño máximo */
   height: auto;
-  display: block;
+  display: flex;
   margin: auto;
 }
 
