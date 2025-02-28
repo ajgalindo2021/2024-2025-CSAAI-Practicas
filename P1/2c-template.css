@@ -95,13 +95,6 @@ p0 {
   padding: 15px;
 }
 
-/* Estilos para imágenes */
-img {
-  width: 100px;
-  height: auto;
-  display: flex;
-}
-
 .imgpersonaje1 {
   width: 100px;
   height: auto;
@@ -149,18 +142,20 @@ ulx {
 }
 
 
-.foto {
-  padding: 0 6px;
-  display: flex;
-  height: 50%;
+img {
+  max-width: 100%; /* Evita que la imagen sobresalga de su contenedor */
+  height: auto; /* Mantiene la proporción de la imagen */
+  display: block;
+  margin: auto;
 }
 
+/* GIFs */
 .gif {
-  justify-content: center;
-  width: 100px;
+  width: 100%; /* Se ajusta al contenedor */
+  max-width: 300px; /* Tamaño máximo */
   height: auto;
-  display: flex;
-  
+  display: block;
+  margin: auto;
 }
 
 .separador {
@@ -178,9 +173,10 @@ ulx {
 
 
 /* Responsive layout - cuando el ancho de pantalla es menor a 600px, muestra las columnas apiladas. */
+/* Responsive design */
 @media screen and (max-width: 600px) {
   .columna {
-      width: 100%;
+    width: 100%; /* Columnas en una sola línea */
   }
 
   .iresponsive {
