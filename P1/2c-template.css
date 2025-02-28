@@ -99,7 +99,7 @@ p0 {
 img {
   width: auto;
   background: none;
-  height: auto;
+  display: block;
 }
 
 .imgpersonaje1 {
@@ -157,6 +157,9 @@ ulx {
 
 .gif {
   justify-content: center;
+  width: auto;
+  background: none;
+  display: block;
 }
 
 .separador {
