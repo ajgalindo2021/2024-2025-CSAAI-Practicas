@@ -99,7 +99,7 @@ p0 {
 img {
   width: 100px;
   height: auto;
-  display: block;
+  display: flex;
 }
 
 .imgpersonaje1 {
@@ -151,7 +151,7 @@ ulx {
 
 .foto {
   padding: 0 6px;
-  display: block;
+  display: flex;
   height: 50%;
 }
 
@@ -159,7 +159,7 @@ ulx {
   justify-content: center;
   width: 100px;
   height: auto;
-  display: block;
+  display: flex;
   
 }
 
