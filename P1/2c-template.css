@@ -30,7 +30,7 @@ body {
   cursor: pointer;
 }
 
-p0 {
+.p0 {
   color: rgb(255, 0, 0);
 }
 
@@ -51,9 +51,6 @@ p0 {
 
 
 
-.il{
-  padding-left: 15;
-}
 .izquierda {
   width: 25%;
 }
@@ -105,21 +102,21 @@ p0 {
   height: auto;
 }
 
-ulo {
+.ulo {
   text-align: left;
   list-style-image: url('tarta.png'); /* Cambia los puntos por una imagen */
   padding: 15px;
 }
 
 
-ule {
+.ule {
   text-align: left;
   list-style-image: url('gmail.png'); 
   padding: 15px;
 }
 
 
-ulx {
+.ulx {
   text-align: left;
   list-style-image: url('X.png');
   padding: 15px;
