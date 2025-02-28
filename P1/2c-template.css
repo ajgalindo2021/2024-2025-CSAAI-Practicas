@@ -97,8 +97,8 @@ p0 {
 
 /* Estilos para imágenes */
 img {
-  width: auto;
-  background: none;
+  width: 100px;
+  height: auto;
   display: block;
 }
 
@@ -157,9 +157,10 @@ ulx {
 
 .gif {
   justify-content: center;
-  width: auto;
-  background: none;
+  width: 100px;
+  height: auto;
   display: block;
+  
 }
 
 .separador {
