@@ -152,7 +152,6 @@ img {
 /* GIFs */
 .gif {
   width: 100%; /* Se ajusta al contenedor */
-  max-width: 300px; /* Tamaño máximo */
   height: auto;
   display: flex;
   margin: auto;
