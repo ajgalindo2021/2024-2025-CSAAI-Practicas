@@ -108,8 +108,8 @@ img {
 }
 
 .imgpersonaje2 {
-  width: 200px;
-  height: 200px;
+  width: 185px;
+  height: auto;
 }
 
 ulo {
@@ -141,7 +141,11 @@ ulx {
   list-style: none;
   padding: 0;
   display: flex;
-  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-wrap: wrap;
+  gap: 50px;
 }
 
 
@@ -152,10 +156,7 @@ ulx {
 }
 
 .gif {
-  padding: 5px;
-  display: flex;
-  height: 50%;
-  
+  justify-content: center;
 }
 
 .separador {
@@ -168,6 +169,7 @@ ulx {
 .contenedor {
   display: inline-block;
   text-align: center;
+  justify-content: center;
 }
 
 
