@@ -1,0 +1,82 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    color: #333;
+}
+
+.fondo-index {
+    background-image: url(antiguo-fondo.webp);
+    background-size: cover; /* Ajusta la imagen al tamaño de la pantalla */
+    background-position: center; /* Centra la imagen */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    background-attachment: fixed;
+    text-align: center;
+  }
+
+#clave-secreta {
+    font-size: 2em;
+    font-weight: bold;
+    background: #333;
+    color: white;
+    padding: 10px;
+    display: inline-block;
+    margin: 10px;
+}
+
+#entrada {
+    font-size: 1.5em;
+    text-align: center;
+    width: 100px;
+    margin: 10px;
+}
+
+#c3 {
+    border: 3px solid rgba(19, 228, 0, 0.925);
+    background: rgba(0, 0, 3, 0.75);
+    font-family: bold;
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 150px;
+    width: 25%; /* Se ajusta al contenedor */
+    margin-left: auto; /* Centra horizontalmente */
+    margin-right: auto;
+    text-align: center; /* Centra el texto dentro del div */
+  }
+
+button {
+    font-size: 1.2em;
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    
+}
+
+.num-btn {
+    border: 3px solid rgba(19, 228, 0, 0.925);
+    background: rgba(0, 0, 3, 0.75);
+    color: white;
+    
+}
+
+#borrar {
+    border: 3px solid rgba(228, 0, 0, 0.925);
+    background: #ff5722;
+    color: white;
+}
+
+#verificar {
+    border: 3px solid rgba(15, 0, 228, 0.925);
+    background: #4cacaf;
+    color: white;
+}
+
+#controles button {
+    background: #2196f3;
+    color: white;
+}

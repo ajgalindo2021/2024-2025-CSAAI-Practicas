@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Clave Secreta</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="fondo-index">
+    <h1>🔐 Adivina la Clave Secreta 🔐</h1>
+
+    <div id="clave-secreta">????</div>
+    <p>Intentos restantes: <span id="intentos">10</span></p>
+    <p>Tiempo: <span id="contador">0</span> segundos</p>
+
+    <input type="text" id="entrada" maxlength="4" readonly>
+
+    <div id="c3">
+        <!-- Botones del 0 al 9 -->
+        <div class="fila">
+            <button class="num-btn">1</button>
+            <button class="num-btn">2</button>
+            <button class="num-btn">3</button>
+        </div>
+        <div class="fila">
+            <button class="num-btn">4</button>
+            <button class="num-btn">5</button>
+            <button class="num-btn">6</button>
+        </div>
+        <div class="fila">
+            <button class="num-btn">7</button>
+            <button class="num-btn">8</button>
+            <button class="num-btn">9</button>
+        </div>
+        <div class="fila">
+            <button id="borrar">⌫</button>
+            <button class="num-btn">0</button>
+            <button id="verificar">✔</button>
+        </div>
+    </div>
+
+    <div id="controles">
+        <button id="start">Start</button>
+        <button id="stop">Stop</button>
+        <button id="reset">Reset</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
