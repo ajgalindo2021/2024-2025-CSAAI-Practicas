@@ -1,3 +1,5 @@
+/* jshint esversion: 6 */
+
 //-- Clase Crono
 class Crono {
     constructor(display) {
