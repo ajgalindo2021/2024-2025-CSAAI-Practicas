@@ -5,7 +5,10 @@ body {
 }
 
 h1 {
-    color: #333;
+    font-size: 80px;
+    color: #6700c7;
+    text-align: center;
+    margin-left: auto; /* Centra horizontalmente */
 }
 
 .fondo-index {
@@ -17,11 +20,21 @@ h1 {
     text-align: center;
   }
 
+.Timer {
+    display: inline-block;
+    padding: 10px;
+    border: 3px solid rgba(228, 0, 0, 0.925);
+    font-size: 40px; /* Aumenta el tamaño del texto en párrafos */
+    background: rgb(0, 0, 0);
+    color: rgb(153, 0, 0);
+    
+}
+
 #clave-secreta {
     font-size: 2em;
     font-weight: bold;
     background: #333;
-    color: white;
+    color: rgb(190, 0, 0);
     padding: 10px;
     display: inline-block;
     margin: 10px;
@@ -36,11 +49,11 @@ h1 {
 
 #c3 {
     border: 3px solid rgba(19, 228, 0, 0.925);
-    background: rgba(0, 0, 3, 0.75);
+    background: rgba(0, 0, 3, 0.85);
     font-family: bold;
     border-radius: 10px;
     padding: 15px;
-    margin-top: 150px;
+    margin-top: 100px;
     width: 25%; /* Se ajusta al contenedor */
     margin-left: auto; /* Centra horizontalmente */
     margin-right: auto;
@@ -79,4 +92,15 @@ button {
 #controles button {
     background: #2196f3;
     color: white;
+}
+
+@media screen and (max-width: 768px) {
+    #c3 {
+        width: 80%; /* Hace que ocupe más espacio en pantallas pequeñas */
+        margin-top: 80px; /* Reduce la distancia desde arriba */
+        padding: 10px; /* Reduce el padding en móviles */
+    }
+    h1 {
+        font-size:30px;
+    }
 }

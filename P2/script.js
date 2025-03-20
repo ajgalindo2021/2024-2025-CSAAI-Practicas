@@ -1,54 +1,103 @@
-let claveSecreta = "";
-let intentosRestantes = 10;
-let tiempo = 0;
-let intervalo;
-let juegoActivo = false;
-let claveMostrada = ["?", "?", "?", "?"]; // Inicialmente todos los caracteres son "?"
-
-// Generar una clave secreta aleatoria de 4 dígitos
-function generarClave() {
-    claveSecreta = "";
-    claveMostrada = ["?", "?", "?", "?"]; // Reiniciar la clave mostrada
-    for (let i = 0; i < 4; i++) {
-        claveSecreta += Math.floor(Math.random() * 10); // Números del 0 al 9
+//-- Clase Crono
+class Crono {
+    constructor(display) {
+        this.display = display;
+        this.cent = 0; // Centésimas
+        this.seg = 0;  // Segundos
+        this.min = 0;  // Minutos
+        this.timer = 0; // Temporizador asociado
     }
-    actualizarClaveMostrada();
-    console.log("Clave generada:", claveSecreta); // Para depuración en consola
+
+    //-- Método que se ejecuta cada centésima
+    tic() {
+        this.cent += 1;
+
+        if (this.cent == 100) { 
+            this.seg += 1; 
+            this.cent = 0; 
+        }
+
+        if (this.seg == 60) { 
+            this.min += 1; 
+            this.seg = 0; 
+        }
+
+        this.display.innerHTML = `${this.min}:${this.seg}:${this.cent}`;
+    }
+
+    //-- Arrancar el cronómetro
+    start() {
+       if (!this.timer) {
+          this.timer = setInterval(() => this.tic(), 10);
+        }
+    }
+
+    //-- Parar el cronómetro
+    stop() {
+        if (this.timer) {
+            clearInterval(this.timer);
+            this.timer = null;
+        }
+    }
+
+    //-- Reset del cronómetro
+    reset() {
+        this.cent = 0;
+        this.seg = 0;
+        this.min = 0;
+        this.display.innerHTML = "0:0:0";
+    }
 }
 
-// Actualizar la clave mostrada en pantalla
+//-- Instancia del cronómetro con el `span` del HTML
+const cronometro = new Crono(document.getElementById("cronometro"));
+
+//-- Modificación del código del juego
+let claveSecreta = "";
+let intentosRestantes = 10;
+let juegoActivo = false;
+let claveMostrada = ["?", "?", "?", "?"];
+
+// Generar clave secreta
+function generarClave() {
+    claveSecreta = "";
+    claveMostrada = ["?", "?", "?", "?"];
+    for (let i = 0; i < 4; i++) {
+        claveSecreta += Math.floor(Math.random() * 10);
+    }
+    actualizarClaveMostrada();
+    console.log("Clave generada:", claveSecreta);
+}
+
+// Mostrar clave parcialmente descubierta
 function actualizarClaveMostrada() {
     document.getElementById("clave-secreta").textContent = claveMostrada.join("");
 }
 
-// Iniciar el juego
+// Iniciar el juego con el cronómetro
 document.getElementById("start").addEventListener("click", function () {
     if (!juegoActivo) {
         generarClave();
         intentosRestantes = 10;
-        tiempo = 0;
         document.getElementById("intentos").textContent = intentosRestantes;
         document.getElementById("entrada").value = "";
+        cronometro.reset(); // Reinicia el cronómetro
+        cronometro.start(); // Inicia el cronómetro
         juegoActivo = true;
-        intervalo = setInterval(() => {
-            tiempo++;
-            document.getElementById("contador").textContent = tiempo;
-        }, 1000);
     }
 });
 
-// Detener el tiempo
+// Detener el juego y cronómetro
 document.getElementById("stop").addEventListener("click", function () {
-    clearInterval(intervalo);
+    cronometro.stop();
     juegoActivo = false;
 });
 
-// Reiniciar el juego
+// Reiniciar juego y cronómetro
 document.getElementById("reset").addEventListener("click", function () {
-    clearInterval(intervalo);
+    cronometro.stop();
+    cronometro.reset();
     juegoActivo = false;
-    tiempo = 0;
-    document.getElementById("contador").textContent = tiempo;
     document.getElementById("entrada").value = "";
     document.getElementById("clave-secreta").textContent = "????";
     intentosRestantes = 10;
@@ -71,7 +120,7 @@ document.getElementById("borrar").addEventListener("click", function () {
     entrada.value = entrada.value.slice(0, -1);
 });
 
-// Verificar la clave ingresada
+// Verificar clave ingresada
 document.getElementById("verificar").addEventListener("click", function () {
     let entrada = document.getElementById("entrada").value;
     if (entrada.length < 4) {
@@ -81,27 +130,26 @@ document.getElementById("verificar").addEventListener("click", function () {
 
     let coincidencias = 0;
 
-    // Verificar cada número en su posición
     for (let i = 0; i < 4; i++) {
         if (entrada[i] === claveSecreta[i]) {
-            claveMostrada[i] = claveSecreta[i]; // Mostrar número correcto
+            claveMostrada[i] = claveSecreta[i];
             coincidencias++;
         }
     }
 
-    actualizarClaveMostrada(); // Actualizar clave con números revelados
+    actualizarClaveMostrada();
 
     if (coincidencias === 4) {
-        alert("🎉 ¡Felicidades! Adivinaste la clave en " + tiempo + " segundos.");
-        clearInterval(intervalo);
+        alert(`🎉 ¡Felicidades! Adivinaste la clave en ${cronometro.min}:${cronometro.seg}:${cronometro.cent}`);
+        cronometro.stop();
         juegoActivo = false;
     } else {
         intentosRestantes--;
         document.getElementById("intentos").textContent = intentosRestantes;
         if (intentosRestantes === 0) {
-            alert("😞 Se acabaron los intentos. La clave era: " + claveSecreta);
+            alert(`😞 Se acabaron los intentos. La clave era: ${claveSecreta}`);
             document.getElementById("clave-secreta").textContent = claveSecreta;
-            clearInterval(intervalo);
+            cronometro.stop();
             juegoActivo = false;
         } else {
             alert("❌ Algunos números son incorrectos. Sigue intentando.");
