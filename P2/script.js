@@ -151,9 +151,6 @@ document.getElementById("verificar").addEventListener("click", function () {
             document.getElementById("clave-secreta").textContent = claveSecreta;
             cronometro.stop();
             juegoActivo = false;
-        } else {
-            alert("❌ Algunos números son incorrectos. Sigue intentando.");
-            document.getElementById("entrada").value = "";
-        }
+        } 
     }
 });
