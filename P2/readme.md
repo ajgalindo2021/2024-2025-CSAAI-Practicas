@@ -1,0 +1,2 @@
+He cambiado un poco el funcionamiento de la bomba, en vez de que vas poniendo los números uno por uno la he diseñado para que 
+pongas una combinación de cuatro números, como una bomba de verdad, si aciertas cualquiera de los cuatro números en la posición correcta se muestra el o los números acertados. Por fuerza y con 10 intentos se saca.
