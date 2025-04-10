@@ -2,6 +2,12 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
+const playerImg = new Image();
+playerImg.src = "nave.png";  // Reemplaza con la ruta de tu imagen
+
+const alienImg = new Image();
+alienImg.src = "alien.png";  // Reemplaza con la ruta de tu imagen
+
 // Ajustamos el tamaño del canvas al tamaño de la ventana
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -15,7 +21,7 @@ const player = {
     y: canvas.height - 60,     // Posición cerca de la parte inferior
     width: 50,                 // Ancho de la nave
     height: 50,                // Altura de la nave
-    speed: 5                   // Velocidad de movimiento
+    speed: 10                   // Velocidad de movimiento
 };
 
 // Arreglos para las balas y los alienígenas
@@ -25,7 +31,7 @@ const aliens = [];
 // Configuración de los alienígenas
 const alienRows = 3;   // Número de filas de alienígenas
 const alienCols = 8;   // Número de columnas de alienígenas
-let alienSpeedX = 2;   // Velocidad horizontal de los alienígenas
+let alienSpeedX = 5;   // Velocidad horizontal de los alienígenas
 let alienSpeedY = 20;  // Distancia que bajan cuando tocan los bordes
 
 // Crear los alienígenas al inicio
@@ -42,15 +48,17 @@ for (let r = 0; r < alienRows; r++) {
 
 // Dibuja la nave del jugador
 function drawPlayer() {
-    ctx.fillStyle = "blue"; // Marcador temporal (reemplazar con imagen)
-    ctx.fillRect(player.x, player.y, player.width, player.height);
+    ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
 }
+
 
 // Dibuja los alienígenas en pantalla
 function drawAliens() {
-    ctx.fillStyle = "green"; // Marcador temporal (reemplazar con imagen)
-    aliens.forEach(alien => ctx.fillRect(alien.x, alien.y, alien.width, alien.height));
+    aliens.forEach(alien => {
+        ctx.drawImage(alienImg, alien.x, alien.y, alien.width, alien.height);
+    });
 }
+
 
 // Dibuja las balas disparadas
 function drawBullets() {
