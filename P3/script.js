@@ -46,7 +46,6 @@ for (let r = 0; r < alienRows; r++) {
     }
 }
 
-
 let isRotating = false; // Variable para controlar la rotación
 
 function drawPlayer() {
