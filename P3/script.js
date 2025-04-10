@@ -18,9 +18,9 @@ let score = 0;
 // Objeto que representa la nave del jugador
 const player = {
     x: canvas.width / 2 - 25,  // Posición inicial en el centro
-    y: canvas.height - 60,     // Posición cerca de la parte inferior
-    width: 50,                 // Ancho de la nave
-    height: 50,                // Altura de la nave
+    y: canvas.height - 100,     // Posición cerca de la parte inferior
+    width: 80,                 // Ancho de la nave
+    height: 80,                // Altura de la nave
     speed: 10                   // Velocidad de movimiento
 };
 
@@ -38,19 +38,46 @@ let alienSpeedY = 20;  // Distancia que bajan cuando tocan los bordes
 for (let r = 0; r < alienRows; r++) {
     for (let c = 0; c < alienCols; c++) {
         aliens.push({
-            x: c * 60 + 30, // Espaciado entre los alienígenas
-            y: r * 60 + 30, // Altura inicial de cada fila
-            width: 40,      // Ancho de los alienígenas
-            height: 40      // Altura de los alienígenas
+            x: c * 80 + 30, // Espaciado entre los alienígenas
+            y: r * 70 + 30, // Altura inicial de cada fila
+            width: 60,      // Ancho de los alienígenas
+            height: 60      // Altura de los alienígenas
         });
     }
 }
 
-// Dibuja la nave del jugador
+let isRotating = false; // Variable para controlar la rotación
+
 function drawPlayer() {
-    ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
+    ctx.save(); // Guarda el estado actual del canvas
+    ctx.translate(player.x + player.width / 2, player.y + player.height / 2); // Mueve el origen al centro de la nave
+
+    if (isRotating) {
+        ctx.rotate(Math.PI / 2);  // Rota 90 grados (PI/2 radianes)
+    }
+
+    ctx.drawImage(playerImg, -player.width / 2, -player.height / 2, player.width, player.height); // Dibuja la nave centrada
+
+    ctx.restore(); // Restaura el estado del canvas
 }
 
+// Detectar disparo y aplicar rotación
+document.addEventListener("keydown", (event) => {
+    if (event.key === " " && Date.now() - lastShotTime > shootDelay) {
+        lastShotTime = Date.now(); // Registra el tiempo del último disparo
+        bullets.push({
+            x: player.x + player.width / 2 - 2.5,
+            y: player.y,
+            width: 5,
+            height: 10
+        });
+
+        isRotating = true; // Activa la rotación de la nave
+        setTimeout(() => {
+            isRotating = false; // Vuelve la nave a la posición normal después de 200 ms
+        }, 200);
+    }
+});
 
 // Dibuja los alienígenas en pantalla
 function drawAliens() {
@@ -58,6 +85,29 @@ function drawAliens() {
         ctx.drawImage(alienImg, alien.x, alien.y, alien.width, alien.height);
     });
 }
+
+let lastShotTime = 0;  // Tiempo del último disparo
+const shootDelay = 300;  // Delay entre disparos en milisegundos (300 ms = 0.3 segundos)
+
+document.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowLeft" && player.x > 0) {
+        player.x -= player.speed; // Mueve la nave a la izquierda
+    }
+    if (event.key === "ArrowRight" && player.x + player.width < canvas.width) {
+        player.x += player.speed; // Mueve la nave a la derecha
+    }
+
+    if (event.key === " " && Date.now() - lastShotTime > shootDelay) {
+        lastShotTime = Date.now(); // Registra el tiempo del último disparo
+        // Dispara una bala desde la nave
+        bullets.push({
+            x: player.x + player.width / 2 - 2.5,
+            y: player.y,
+            width: 5,
+            height: 10
+        });
+    }
+});
 
 
 // Dibuja las balas disparadas
@@ -69,7 +119,7 @@ function drawBullets() {
 // Mueve las balas hacia arriba y las elimina si salen del canvas
 function moveBullets() {
     bullets.forEach((bullet, index) => {
-        bullet.y -= 5;
+        bullet.y -= 10;
         if (bullet.y < 0) bullets.splice(index, 1);
     });
 }
