@@ -1,39 +1,64 @@
+// Seleccionamos el canvas y su contexto
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
+// Ajustamos el tamaño del canvas al tamaño de la ventana
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+// Variable para la puntuación
 let score = 0;
-const player = { x: canvas.width / 2 - 25, y: canvas.height - 60, width: 50, height: 50, speed: 5 };
+
+// Objeto que representa la nave del jugador
+const player = {
+    x: canvas.width / 2 - 25,  // Posición inicial en el centro
+    y: canvas.height - 60,     // Posición cerca de la parte inferior
+    width: 50,                 // Ancho de la nave
+    height: 50,                // Altura de la nave
+    speed: 5                   // Velocidad de movimiento
+};
+
+// Arreglos para las balas y los alienígenas
 const bullets = [];
 const aliens = [];
-const alienRows = 3;
-const alienCols = 8;
-const alienSpeed = 2;
 
-// Crear alienígenas
+// Configuración de los alienígenas
+const alienRows = 3;   // Número de filas de alienígenas
+const alienCols = 8;   // Número de columnas de alienígenas
+let alienSpeedX = 2;   // Velocidad horizontal de los alienígenas
+let alienSpeedY = 20;  // Distancia que bajan cuando tocan los bordes
+
+// Crear los alienígenas al inicio
 for (let r = 0; r < alienRows; r++) {
     for (let c = 0; c < alienCols; c++) {
-        aliens.push({ x: c * 60 + 30, y: r * 60 + 30, width: 40, height: 40 });
+        aliens.push({
+            x: c * 60 + 30, // Espaciado entre los alienígenas
+            y: r * 60 + 30, // Altura inicial de cada fila
+            width: 40,      // Ancho de los alienígenas
+            height: 40      // Altura de los alienígenas
+        });
     }
 }
 
+// Dibuja la nave del jugador
 function drawPlayer() {
-    ctx.fillStyle = "blue";
+    ctx.fillStyle = "blue"; // Marcador temporal (reemplazar con imagen)
     ctx.fillRect(player.x, player.y, player.width, player.height);
 }
 
+// Dibuja los alienígenas en pantalla
 function drawAliens() {
-    ctx.fillStyle = "green";
+    ctx.fillStyle = "green"; // Marcador temporal (reemplazar con imagen)
     aliens.forEach(alien => ctx.fillRect(alien.x, alien.y, alien.width, alien.height));
 }
 
+// Dibuja las balas disparadas
 function drawBullets() {
-    ctx.fillStyle = "red";
+    ctx.fillStyle = "red"; // Marcador temporal (reemplazar con imagen)
     bullets.forEach(bullet => ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height));
 }
 
+// Mueve las balas hacia arriba y las elimina si salen del canvas
 function moveBullets() {
     bullets.forEach((bullet, index) => {
         bullet.y -= 5;
@@ -41,18 +66,33 @@ function moveBullets() {
     });
 }
 
+// Mueve los alienígenas de lado a lado y los hace bajar cuando tocan los bordes
 function moveAliens() {
-    let direction = alienSpeed;
+    let shouldMoveDown = false;
+
+    // Mueve todos los alienígenas en la dirección actual
     aliens.forEach(alien => {
-        alien.x += direction;
+        alien.x += alienSpeedX;
     });
 
-    if (aliens.some(alien => alien.x + alien.width > canvas.width || alien.x < 0)) {
-        alienSpeed *= -1;
-        aliens.forEach(alien => alien.y += 20);
+    // Verifica si algún alien toca los bordes del canvas
+    for (let alien of aliens) {
+        if (alien.x + alien.width >= canvas.width || alien.x <= 0) {
+            shouldMoveDown = true;
+            break; // No hace falta seguir verificando
+        }
+    }
+
+    // Si algún alien toca un borde, todos bajan y cambian de dirección
+    if (shouldMoveDown) {
+        aliens.forEach(alien => {
+            alien.y += alienSpeedY;
+        });
+        alienSpeedX *= -1; // Invierte la dirección horizontal
     }
 }
 
+// Detecta colisiones entre balas y alienígenas
 function detectCollisions() {
     bullets.forEach((bullet, bIndex) => {
         aliens.forEach((alien, aIndex) => {
@@ -61,8 +101,11 @@ function detectCollisions() {
                 bullet.y < alien.y + alien.height &&
                 bullet.y + bullet.height > alien.y) {
                 
+                // Eliminar la bala y el alienígena
                 bullets.splice(bIndex, 1);
                 aliens.splice(aIndex, 1);
+
+                // Sumar 10 puntos al marcador
                 score += 10;
                 document.getElementById("score").innerText = "Puntuación: " + score;
             }
@@ -70,21 +113,36 @@ function detectCollisions() {
     });
 }
 
+// Función principal que actualiza el juego en cada frame
 function updateGame() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawPlayer();
-    drawAliens();
-    drawBullets();
-    moveBullets();
-    moveAliens();
-    detectCollisions();
-    requestAnimationFrame(updateGame);
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpia la pantalla
+    drawPlayer();    // Dibuja la nave
+    drawAliens();    // Dibuja los alienígenas
+    drawBullets();   // Dibuja las balas
+    moveBullets();   // Mueve las balas
+    moveAliens();    // Mueve los alienígenas
+    detectCollisions(); // Verifica si hay impactos
+    requestAnimationFrame(updateGame); // Repite la función en el siguiente frame
 }
 
+// Manejo del teclado para mover la nave y disparar
 document.addEventListener("keydown", (event) => {
-    if (event.key === "ArrowLeft" && player.x > 0) player.x -= player.speed;
-    if (event.key === "ArrowRight" && player.x + player.width < canvas.width) player.x += player.speed;
-    if (event.key === " ") bullets.push({ x: player.x + player.width / 2 - 2.5, y: player.y, width: 5, height: 10 });
+    if (event.key === "ArrowLeft" && player.x > 0) {
+        player.x -= player.speed; // Mueve la nave a la izquierda
+    }
+    if (event.key === "ArrowRight" && player.x + player.width < canvas.width) {
+        player.x += player.speed; // Mueve la nave a la derecha
+    }
+    if (event.key === " ") {
+        // Dispara una bala desde la nave
+        bullets.push({
+            x: player.x + player.width / 2 - 2.5,
+            y: player.y,
+            width: 5,
+            height: 10
+        });
+    }
 });
 
+// Iniciar el bucle del juego
 updateGame();
