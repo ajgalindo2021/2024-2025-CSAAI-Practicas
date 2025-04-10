@@ -15,6 +15,7 @@ canvas.height = window.innerHeight;
 // Variable para la puntuación
 let score = 0;
 
+
 // Objeto que representa la nave del jugador
 const player = {
     x: canvas.width / 2 - 25,  // Posición inicial en el centro
