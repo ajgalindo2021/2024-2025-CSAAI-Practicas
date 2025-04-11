@@ -2,20 +2,31 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
+// Cargar imágenes
 const playerImg = new Image();
-playerImg.src = "nave.png";  // Reemplaza con tu imagen de la nave
+playerImg.src = "nave.png"; 
 
 const alienImg = new Image();
-alienImg.src = "alien.png";  // Reemplaza con tu imagen de los alienígenas
+alienImg.src = "alien.png"; 
 
-// Ajustamos el tamaño del canvas al tamaño de la ventana
+const explosionImg = new Image();
+explosionImg.src = "explosion.png";  // Imagen de explosión
+
+// Cargar sonidos
+const shootSound = new Audio("disparo.mp3");  // Sonido de disparo
+const explosionSound = new Audio("explosion.mp3");  // Sonido de explosión
+const victorySound = new Audio("victoria.mp3");  // Sonido de victoria
+const gameOverSound = new Audio("gameover.mp3");  // Sonido de game over
+
+// Ajustamos el tamaño del canvas
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-// Variable para la puntuación
+// Variables de juego
 let score = 0;
+let gameOver = false;
 
-// Objeto que representa la nave del jugador
+// Objeto del jugador
 const player = {
     x: canvas.width / 2 - 25,  
     y: canvas.height - 100,    
@@ -24,17 +35,18 @@ const player = {
     speed: 10                  
 };
 
-// Arreglos para las balas y los alienígenas
+// Balas y alienígenas
 const bullets = [];
 const aliens = [];
+const explosions = [];  // Array para manejar las explosiones
 
 // Configuración de los alienígenas
 const alienRows = 3;
 const alienCols = 8;
-let alienSpeedX = 5;   
+let alienSpeedX = 5;
 let alienSpeedY = 20;
 
-// Crear los alienígenas al inicio
+// Crear alienígenas
 for (let r = 0; r < alienRows; r++) {
     for (let c = 0; c < alienCols; c++) {
         aliens.push({
@@ -46,65 +58,67 @@ for (let r = 0; r < alienRows; r++) {
     }
 }
 
-let isRotating = false; // Control de rotación de la nave
-let lastShotTime = 0;  // Tiempo del último disparo
-const shootDelay = 300;  // Delay entre disparos (en ms)
+let isRotating = false;
+let lastShotTime = 0;
+const shootDelay = 300;
 
-// Función para dibujar la nave
+// Dibujar jugador
 function drawPlayer() {
     ctx.save();
     ctx.translate(player.x + player.width / 2, player.y + player.height / 2);
-
-    if (isRotating) {
-        ctx.rotate(Math.PI / 2);  // Rota 90° a la derecha
-    }
-
+    if (isRotating) ctx.rotate(Math.PI / 2);
     ctx.drawImage(playerImg, -player.width / 2, -player.height / 2, player.width, player.height);
     ctx.restore();
 }
 
-// Dibuja los alienígenas en pantalla
+// Dibujar alienígenas
 function drawAliens() {
-    aliens.forEach(alien => {
-        ctx.drawImage(alienImg, alien.x, alien.y, alien.width, alien.height);
-    });
+    aliens.forEach(alien => ctx.drawImage(alienImg, alien.x, alien.y, alien.width, alien.height));
 }
 
-// Dibuja las balas
+// Dibujar balas
 function drawBullets() {
-    ctx.fillStyle = "red"; 
+    ctx.fillStyle = "red";
     bullets.forEach(bullet => ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height));
 }
 
-// Mueve las balas hacia arriba y las elimina si salen del canvas
+// Dibujar explosiones
+function drawExplosions() {
+    for (let i = explosions.length - 1; i >= 0; i--) {
+        let explosion = explosions[i];
+        ctx.drawImage(explosionImg, explosion.x, explosion.y, 60, 60);
+        explosion.frames--;
+        if (explosion.frames <= 0) explosions.splice(i, 1);  // Eliminar después de 15 frames
+    }
+}
+
+// Mover balas
 function moveBullets() {
     for (let i = bullets.length - 1; i >= 0; i--) {
-        bullets[i].y -= 15; // Aumentamos la velocidad de los disparos
+        bullets[i].y -= 15;
         if (bullets[i].y < 0) bullets.splice(i, 1);
     }
 }
 
-// Mueve los alienígenas y los hace bajar si tocan los bordes
+// Mover alienígenas
 function moveAliens() {
     let shouldMoveDown = false;
 
     for (let alien of aliens) {
         alien.x += alienSpeedX;
-
-        if (alien.x + alien.width >= canvas.width || alien.x <= 0) {
-            shouldMoveDown = true;
-        }
+        if (alien.x + alien.width >= canvas.width || alien.x <= 0) shouldMoveDown = true;
     }
 
     if (shouldMoveDown) {
         for (let alien of aliens) {
             alien.y += alienSpeedY;
+            if (alien.y + alien.height >= player.y) endGame(false); // Si llegan al jugador, game over
         }
-        alienSpeedX *= -1; // Invierte la dirección horizontal
+        alienSpeedX *= -1;
     }
 }
 
-// Detecta colisiones entre balas y alienígenas
+// Detectar colisiones
 function detectCollisions() {
     for (let b = bullets.length - 1; b >= 0; b--) {
         for (let a = aliens.length - 1; a >= 0; a--) {
@@ -117,23 +131,45 @@ function detectCollisions() {
                 bullet.y < alien.y + alien.height &&
                 bullet.y + bullet.height > alien.y
             ) {
+                explosions.push({ x: alien.x, y: alien.y, frames: 15 }); // Agregar explosión
+                explosionSound.play();  // Sonido de explosión
                 bullets.splice(b, 1);
                 aliens.splice(a, 1);
-
                 score += 10;
                 document.getElementById("score").innerText = "Puntuación: " + score;
-                break; // Evita eliminar más de un alien con una sola bala
+                break;
             }
         }
     }
+
+    if (aliens.length === 0) endGame(true); // Si no quedan aliens, victoria
 }
 
-// Función principal del juego
+// Mostrar mensaje de final de juego
+function endGame(victory) {
+    gameOver = true;
+    ctx.fillStyle = "white";
+    ctx.font = "50px Arial";
+    ctx.textAlign = "center";
+
+    if (victory) {
+        ctx.fillText("¡Victoria! Has salvado a la humanidad 🎉", canvas.width / 2, canvas.height / 2);
+        victorySound.play();
+    } else {
+        ctx.fillText("GAME OVER. La humanidad ha caído 💀", canvas.width / 2, canvas.height / 2);
+        gameOverSound.play();
+    }
+}
+
+// Función principal
 function updateGame() {
+    if (gameOver) return;  // Si termina el juego, no sigue
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawPlayer();
     drawAliens();
     drawBullets();
+    drawExplosions();
     moveBullets();
     moveAliens();
     detectCollisions();
@@ -152,22 +188,15 @@ document.addEventListener("keydown", (event) => {
         case " ":
             if (Date.now() - lastShotTime > shootDelay) {
                 lastShotTime = Date.now();
-                bullets.push({
-                    x: player.x + player.width / 2 - 2.5,
-                    y: player.y,
-                    width: 5,
-                    height: 10
-                });
-
+                bullets.push({ x: player.x + player.width / 2 - 2.5, y: player.y, width: 5, height: 10 });
+                shootSound.play();  // Sonido de disparo
                 isRotating = true;
-                setTimeout(() => {
-                    isRotating = false;
-                }, 200);
+                setTimeout(() => { isRotating = false; }, 200);
             }
             break;
     }
 });
 
-// Iniciar el juego
+// Iniciar juego
 updateGame();
 
