@@ -118,6 +118,19 @@ function moveAliens() {
     }
 }
 
+function playShootSound() {
+    const shoot = new Audio("disparo.mp3");
+    shoot.volume = 0.5; // Opcional
+    shoot.play();
+}
+
+function playExplosionSound() {
+    const explosion = new Audio("explosion.mp3");
+    explosion.volume = 0.5; // Opcional
+    explosion.play();
+}
+
+
 // Detectar colisiones
 function detectCollisions() {
     for (let b = bullets.length - 1; b >= 0; b--) {
@@ -132,7 +145,7 @@ function detectCollisions() {
                 bullet.y + bullet.height > alien.y
             ) {
                 explosions.push({ x: alien.x, y: alien.y, frames: 15 }); // Agregar explosión
-                explosionSound.play();  // Sonido de explosión
+                playExplosionSound();  // Sonido de explosión
                 bullets.splice(b, 1);
                 aliens.splice(a, 1);
                 score += 10;
@@ -189,7 +202,7 @@ document.addEventListener("keydown", (event) => {
             if (Date.now() - lastShotTime > shootDelay) {
                 lastShotTime = Date.now();
                 bullets.push({ x: player.x + player.width / 2 - 2.5, y: player.y, width: 5, height: 10 });
-                shootSound.play();  // Sonido de disparo
+                playShootSound();  // Sonido de disparo
                 isRotating = true;
                 setTimeout(() => { isRotating = false; }, 200);
             }
