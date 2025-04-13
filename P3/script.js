@@ -161,7 +161,7 @@ function detectCollisions() {
 // Mostrar mensaje de final de juego
 function endGame(victory) {
     gameOver = true;
-    ctx.fillStyle = "white";
+    ctx.fillStyle = "green";
     ctx.font = "50px Arial";
     ctx.textAlign = "center";
 
