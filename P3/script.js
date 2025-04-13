@@ -1,4 +1,5 @@
-// Seleccionamos el canvas y su contexto
+/* jshint esversion: 6 */
+
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -13,9 +14,7 @@ const explosionImg = new Image();
 explosionImg.src = "explosion.png";  // Imagen de explosión
 
 // Cargar sonidos
-const shootSound = new Audio("disparo.mp3");  // Sonido de disparo+
-const explosionSound = new Audio("explosion.mp3");  // Sonido de explosión+
-const victorySound = new Audio("victoria.mp3");  // Sonido de victoria+
+const victorySound = new Audio("victoria.mp3");  // Sonido de victoria
 const gameOverSound = new Audio("gameover.mp3");  // Sonido de game over
 
 // Ajustamos el tamaño del canvas
