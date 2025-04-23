@@ -24,8 +24,8 @@ function generateCards(size) {
 
 function renderBoard() {
   board.innerHTML = '';
-  board.style.gridTemplateColumns = `repeat(${size}, 100px)`;
-  board.style.gridTemplateRows = `repeat(${size}, 100px)`;
+  board.style.gridTemplateColumns = `repeat(${size}, 80px)`;
+  board.style.gridTemplateRows = `repeat(${size}, 107px)`;
   const values = generateCards(size);
 
   values.forEach(value => {
