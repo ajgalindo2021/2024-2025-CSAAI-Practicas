@@ -1,7 +1,6 @@
 body {
     font-family: Arial, sans-serif;
     text-align: center;
-    background: #f0f0f0;
     margin: 0;
     padding: 20px;
   }
@@ -14,8 +13,7 @@ body {
     min-height: 100%;
     object-fit: cover;
     z-index: -1;
-    opacity: 0.5; /* Puedes ajustarlo */
-    filter: blur(2px) brightness(0.7); /* Opcional: estilo más sutil */
+
   }
   
   .controls {
