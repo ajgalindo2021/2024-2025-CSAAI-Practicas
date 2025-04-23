@@ -31,45 +31,48 @@ function renderBoard() {
   values.forEach(value => {
     const card = document.createElement('div');
     card.classList.add('card');
-
+  
     const inner = document.createElement('div');
     inner.classList.add('inner');
     inner.dataset.value = value;
-
+  
     const front = document.createElement('div');
     front.classList.add('front');
     front.style.backgroundImage = `url('img/${value}.png')`;
-
+  
     const back = document.createElement('div');
     back.classList.add('back');
-
+  
     inner.appendChild(front);
     inner.appendChild(back);
     card.appendChild(inner);
-
-    card.addEventListener('click', () => flipCard(card, inner));
+  
+    // Escucha el clic directamente en .inner
+    inner.addEventListener('click', () => flipCard(inner));
     board.appendChild(card);
   });
+  
 }
 
-function flipCard(card, inner) {
-  if (!gameStarted) {
-    startTimer();
-    gameStarted = true;
-    sizeSelect.disabled = true;
+function flipCard(inner) {
+    if (!gameStarted) {
+      startTimer();
+      gameStarted = true;
+      sizeSelect.disabled = true;
+    }
+  
+    if (inner.classList.contains('flipped') || flippedCards.length === 2) return;
+  
+    inner.classList.add('flipped');
+    flippedCards.push(inner);
+  
+    if (flippedCards.length === 2) {
+      moves++;
+      movesDisplay.textContent = moves;
+      checkMatch();
+    }
   }
-
-  if (inner.classList.contains('flipped') || flippedCards.length === 2) return;
-
-  inner.classList.add('flipped');
-  flippedCards.push(inner);
-
-  if (flippedCards.length === 2) {
-    moves++;
-    movesDisplay.textContent = moves;
-    checkMatch();
-  }
-}
+  
 
 function checkMatch() {
   const [card1, card2] = flippedCards;
