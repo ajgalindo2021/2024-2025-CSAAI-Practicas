@@ -6,6 +6,18 @@ body {
     padding: 20px;
   }
   
+  #background-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 0.5; /* Puedes ajustarlo */
+    filter: blur(2px) brightness(0.7); /* Opcional: estilo más sutil */
+  }
+  
   .controls {
     margin-bottom: 20px;
   }
