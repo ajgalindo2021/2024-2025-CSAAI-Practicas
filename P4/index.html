@@ -1,29 +1,31 @@
-<html lang="es"></html>
+<!DOCTYPE html>
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Juego de Memoria</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <audio autoplay loop>
-        <source src= "Balatro.mp3" type="audio/mpeg">
-      </audio>
   <div class="controls">
-    <label for="size">Dimensiones:</label>
+    <label for="size">Tamaño del tablero:</label>
     <select id="size">
       <option value="2">2x2</option>
       <option value="4" selected>4x4</option>
       <option value="6">6x6</option>
     </select>
+
     <button id="start">Comenzar</button>
     <button id="reset">Reiniciar</button>
-    <div>
-      Movimientos: <span id="moves">0</span> | Tiempo: <span id="timer">0</span>s
-    </div>
   </div>
+
+  <div class="info">
+    <p>Movimientos: <span id="moves">0</span></p>
+    <p>Tiempo: <span id="timer">0</span> segundos</p>
+  </div>
+
   <div id="board"></div>
 
-  <script src="scrypt.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
