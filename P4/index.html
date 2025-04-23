@@ -1,0 +1,26 @@
+<html lang="es"></html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Juego de Memoria</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="controls">
+    <label for="size">Dimensiones:</label>
+    <select id="size">
+      <option value="2">2x2</option>
+      <option value="4" selected>4x4</option>
+      <option value="6">6x6</option>
+    </select>
+    <button id="start">Comenzar</button>
+    <button id="reset">Reiniciar</button>
+    <div>
+      Movimientos: <span id="moves">0</span> | Tiempo: <span id="timer">0</span>s
+    </div>
+  </div>
+  <div id="board"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
