@@ -1,3 +1,4 @@
+/* jshint esversion: 6 */
 const board = document.getElementById('board');
 const sizeSelect = document.getElementById('size');
 const startBtn = document.getElementById('start');
