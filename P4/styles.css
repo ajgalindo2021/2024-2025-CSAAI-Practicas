@@ -1,4 +1,4 @@
-body {
+  body {
     font-family: Arial, sans-serif;
     text-align: center;
     margin: 0;
@@ -23,14 +23,17 @@ body {
   
   #board {
     display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
     gap: 10px;
     justify-content: center;
-    margin-top: 20px;
+    padding: 1rem;
+    max-width: 100%;
+    box-sizing: border-box;
   }
   
   .card {
-    width: 80px;
-    height: 107px;
+    width: 100%;
+    aspect-ratio: 80 / 107;
     perspective: 1000px;
   }
   
@@ -51,9 +54,10 @@ body {
     width: 100%;
     height: 100%;
     backface-visibility: hidden;
+    border-radius: 10px;
     background-size: cover;
     background-position: center;
-    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
   }
   
   .front {
@@ -62,10 +66,31 @@ body {
   
   .back {
     background-image: url('img/back.png');
-    background-color: #444;
+    background-color: #ccc;
   }
+  
   
   .info {
     margin-bottom: 20px;
     color: aliceblue; 
   }
+
+  @media (max-width: 600px) {
+    body {
+      font-size: 16px;
+    }
+  
+    .controls {
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    #board {
+      gap: 2vw;
+    }
+  
+    .card {
+      width: 22vw;
+    }
+  }
+  
