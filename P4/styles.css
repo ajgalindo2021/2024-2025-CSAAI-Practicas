@@ -23,11 +23,12 @@
   
   #board {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
     gap: 10px;
     justify-content: center;
     padding: 1rem;
-    max-width: 100%;
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
     box-sizing: border-box;
   }
   
@@ -35,7 +36,9 @@
     width: 100%;
     aspect-ratio: 80 / 107;
     perspective: 1000px;
+    max-width: 100px; /* Limita el tamaño en pantallas grandes */
   }
+  
   
   .inner {
     width: 100%;
@@ -76,21 +79,13 @@
   }
 
   @media (max-width: 600px) {
-    body {
-      font-size: 16px;
-    }
-  
-    .controls {
-      flex-direction: column;
-      gap: 10px;
-    }
-  
     #board {
-      gap: 2vw;
+      max-width: 90vw;
+      gap: 5px;
     }
   
     .card {
-      width: 22vw;
+      max-width: none; /* Quita el límite para que crezcan */
     }
   }
   
