@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simulador de Red</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <h1>Simulador de Red Multimedia</h1>
+
+  <div class="controls">
+    <button id="btnCNet">Generar Red</button>
+    <button id="btnMinPath">Calcular Ruta</button>
+  </div>
+
+  <div id="display">
+    <p><strong>Número de nodos:</strong> <span id="nodeCount">0</span></p>
+    <p><strong>Tiempo total de envío:</strong> <span id="totalTime">-</span> ms</p>
+    <p><strong>Mensaje:</strong> <span id="message">Esperando acción del usuario...</span></p>
+  </div>
+
+  <canvas id="networkCanvas" width="800" height="600"></canvas>
+
+  <script src="net-dijkstra.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
