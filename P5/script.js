@@ -1,132 +1,138 @@
-// Variables de trabajo
 const canvas = document.getElementById('networkCanvas');
 const ctx = canvas.getContext('2d');
 
-let redAleatoria;
-let nodoOrigen = 0, nodoDestino = 0;
-let rutaMinimaConRetardos;
-
-const nodeRadius = 40;
-const numNodos = 5;
-const nodeConnect = 2;
-const nodeRandomDelay = 1000;
-const pipeRandomWeight = 100; // No hay retardo entre nodos 100
-
-// Localizando elementos en el DOM
 const btnCNet = document.getElementById("btnCNet");
 const btnMinPath = document.getElementById("btnMinPath");
+const nodeCountDisplay = document.getElementById("nodeCount");
+const totalTimeDisplay = document.getElementById("totalTime");
+const messageDisplay = document.getElementById("message");
 
-// Clase para representar un nodo en el grafo
+const nodeRadius = 40;
+const nodeConnect = 2;
+const nodeRandomDelay = 1000;
+const pipeRandomWeight = 100;
+const numNodos = 5;
+
+let redAleatoria = [];
+let rutaMinimaConRetardos = [];
+
 class Nodo {
-
   constructor(id, x, y, delay) {
-    this.id = id; // Identificador del nodo
-    this.x = x; // Coordenada X del nodo
-    this.y = y; // Coordenada Y del nodo
-    this.delay = delay; // Retardo del nodo en milisegundos
-    this.conexiones = []; // Array de conexiones a otros nodos
+    this.id = id;
+    this.x = x;
+    this.y = y;
+    this.delay = delay;
+    this.conexiones = []; // conexiones: { id: <nodo_id>, peso: <peso> }
   }
-  
-  // Método para agregar una conexión desde este nodo a otro nodo con un peso dado
+
   conectar(nodo, peso) {
-    this.conexiones.push({ nodo, peso });
+    this.conexiones.push({ id: nodo.id, peso });
   }
-
 }
-  
-// Función para generar una red aleatoria con nodos en diferentes estados de congestión
-function crearRedAleatoriaConCongestion(numNodos, numConexiones) {
-  
-  const nodos = [];
-  let x = 0, y = 0, delay = 0;
-  let nodoActual = 0, nodoAleatorio = 0, pickNode = 0, peso = 0;
 
-  // Generamos los nodos
+function generarRed() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  redAleatoria = [];
+  rutaMinimaConRetardos = [];
+
+  // Crear nodos
   for (let i = 0; i < numNodos; i++) {
-    x = randomNumber(nodeRadius, (canvas.width - nodeRadius)); // Generar coordenada x aleatoria
-    y = randomNumber(nodeRadius, (canvas.height - nodeRadius)); // Generar coordenada y aleatoria
-    delay = generarRetardo(); // Retardo aleatorio para simular congestión
-    nodos.push(new Nodo(i, x, y, delay)); // Generar un nuevo nodo y añadirlo a la lista de nodos de la red
+    const x = Math.random() * (canvas.width - 2 * nodeRadius) + nodeRadius;
+    const y = Math.random() * (canvas.height - 2 * nodeRadius) + nodeRadius;
+    const delay = Math.floor(Math.random() * nodeRandomDelay) + 100;
+    redAleatoria.push(new Nodo(i, x, y, delay));
   }
 
-  // Conectamos los nodos
-  for (let i = 0; i < numNodos; i++) {
-    nodoActual = nodos[i];
-    for (let j = 0; j < numConexiones; j++) {
-      pickNode = Math.floor(Math.random() * numNodos);
-      nodoAleatorio = nodos[pickNode];
-      //peso = Math.random() * pipeRandomWeight; // Peso aleatorio para simular la distancia entre nodos
-      peso = pipeRandomWeight; // El mismo peso para todas las conexiones
-      nodoActual.conectar(nodoAleatorio, peso);
+  // Crear conexiones
+  for (let i = 0; i < redAleatoria.length; i++) {
+    let conexiones = 0;
+    let intentos = 0;
+
+    while (conexiones < nodeConnect && intentos < 20) {
+      const target = Math.floor(Math.random() * numNodos);
+      if (
+        target !== i &&
+        !redAleatoria[i].conexiones.some(c => c.id === target)
+      ) {
+        const peso = Math.floor(Math.random() * pipeRandomWeight) + 10;
+        redAleatoria[i].conectar(redAleatoria[target], peso);
+        redAleatoria[target].conectar(redAleatoria[i], peso);
+        conexiones++;
+      }
+      intentos++;
     }
   }
 
-  return nodos;
+  dibujarRed();
+  nodeCountDisplay.textContent = redAleatoria.length;
+  totalTimeDisplay.textContent = "-";
+  messageDisplay.textContent = "Red generada correctamente.";
 }
 
-// Función para generar un retardo aleatorio entre 0 y 1000 ms
-function generarRetardo() {
-  return Math.random() * nodeRandomDelay;
-}
+function dibujarRed(ruta = []) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-// Generar un número aleatorio dentro de un rango
-function randomNumber(min, max) {
-  return Math.floor(Math.random() * (max - min) + min);
-}
-
-// Dibujar la red en el canvas
-function drawNet(nnodes) {
-  // Dibujamos las conexiones entre nodos
-  nnodes.forEach(nodo => {
-    nodo.conexiones.forEach(({ nodo: conexion, peso }) => {
+  // Dibujar conexiones
+  redAleatoria.forEach(nodo => {
+    nodo.conexiones.forEach(conexion => {
+      const targetNode = redAleatoria.find(n => n.id === conexion.id);
       ctx.beginPath();
       ctx.moveTo(nodo.x, nodo.y);
-      ctx.lineTo(conexion.x, conexion.y);
+      ctx.lineTo(targetNode.x, targetNode.y);
+      ctx.strokeStyle = "#aaa";
       ctx.stroke();
+
+      const midX = (nodo.x + targetNode.x) / 2;
+      const midY = (nodo.y + targetNode.y) / 2;
+      ctx.fillStyle = "black";
+      ctx.font = "12px Arial";
+      ctx.fillText(`${conexion.peso}`, midX, midY);
     });
   });
 
-  let nodoDesc; // Descripción del nodo
-
-  // Dibujamos los nodos
-  nnodes.forEach(nodo => {
+  // Dibujar nodos
+  redAleatoria.forEach(nodo => {
     ctx.beginPath();
     ctx.arc(nodo.x, nodo.y, nodeRadius, 0, 2 * Math.PI);
-    ctx.fillStyle = 'blue';
+    const isRuta = ruta.includes(nodo.id);
+    ctx.fillStyle = isRuta ? "green" : "blue";
     ctx.fill();
+    ctx.strokeStyle = "#000";
     ctx.stroke();
-    ctx.font = '12px Arial';
-    ctx.fillStyle = 'white';
-    ctx.textAlign = 'center';
-    nodoDesc = "N" + nodo.id + " delay " + Math.floor(nodo.delay);
-    ctx.fillText(nodoDesc, nodo.x, nodo.y + 5);
+
+    ctx.fillStyle = "white";
+    ctx.font = "14px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText(`ID: ${nodo.id}`, nodo.x, nodo.y - 5);
+    ctx.fillText(`D: ${nodo.delay}ms`, nodo.x, nodo.y + 15);
   });
 }
 
-// Función de calback para generar la red de manera aleatoria
-btnCNet.onclick = () => {
+function calcularRuta() {
+  if (redAleatoria.length === 0) {
+    messageDisplay.textContent = "Primero genera una red.";
+    return;
+  }
 
-  // Generar red de nodos con congestión creada de manera aleatoria redAleatoria
-  // Cada nodo tendrá un delay aleatorio para simular el envío de paquetes de datos
-  redAleatoria = crearRedAleatoriaConCongestion(numNodos, nodeConnect);
+  const nodoInicio = redAleatoria[0];
+  const nodoFin = redAleatoria[redAleatoria.length - 1];
 
-  // Limpiamos el canvas
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const resultado = dijkstraConRetardos(redAleatoria, nodoInicio, nodoFin);
 
-  // Dibujar la red que hemos generado
-  drawNet(redAleatoria);
+  if (!resultado.ruta || resultado.ruta.length === 0) {
+    messageDisplay.textContent = "No se encontró una ruta.";
+    return;
+  }
 
+  // Recuperar objetos Nodo desde los IDs devueltos
+  rutaMinimaConRetardos = resultado.ruta.map(id => redAleatoria.find(n => n.id === id));
+
+  const totalDelay = rutaMinimaConRetardos.reduce((sum, nodo) => sum + nodo.delay, 0);
+  totalTimeDisplay.textContent = totalDelay;
+  messageDisplay.textContent = "Ruta mínima calculada correctamente.";
+
+  dibujarRed(rutaMinimaConRetardos.map(n => n.id));
 }
 
-
-btnMinPath.onclick = () => {
-
-  // Supongamos que tienes una red de nodos llamada redAleatoria y tienes nodos origen y destino
-  nodoOrigen = redAleatoria[0]; // Nodo de origen
-  nodoDestino = redAleatoria[numNodos - 1]; // Nodo de destino
-
-  // Calcular la ruta mínima entre el nodo origen y el nodo destino utilizando Dijkstra con retrasos
-  rutaMinimaConRetardos = dijkstraConRetardos(redAleatoria, nodoOrigen, nodoDestino);
-  console.log("Ruta mínima con retrasos:", rutaMinimaConRetardos);
-
-}
+btnCNet.addEventListener("click", generarRed);
+btnMinPath.addEventListener("click", calcularRuta);
