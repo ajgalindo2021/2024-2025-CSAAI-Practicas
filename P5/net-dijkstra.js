@@ -1,3 +1,4 @@
+/* jshint esversion: 6 */
 function dijkstraConRetardos(red, origen, destino) {
   const distancia = {};
   const anterior = {};
@@ -27,7 +28,8 @@ function dijkstraConRetardos(red, origen, destino) {
 
       for (const { id: vecinoId, peso } of nodoObj.conexiones) {
           const vecinoObj = red.find(n => n.id === vecinoId);
-          const distanciaTotal = distancia[nodoActual] + peso + vecinoObj.delay;
+          const distanciaTotal = distancia[nodoActual] + vecinoObj.delay;
+
 
           if (distanciaTotal < distancia[vecinoId]) {
               distancia[vecinoId] = distanciaTotal;

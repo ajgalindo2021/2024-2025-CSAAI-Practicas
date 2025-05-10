@@ -1,3 +1,4 @@
+/* jshint esversion: 6 */
 const canvas = document.getElementById('networkCanvas');
 const ctx = canvas.getContext('2d');
 
@@ -52,7 +53,8 @@ function generarRed() {
       const target = Math.floor(Math.random() * numNodos);
       if (
         target !== i &&
-        !redAleatoria[i].conexiones.some(c => c.id === target)
+        !redAleatoria[i].conexiones.some(c => c.id === target) &&
+        !( (i === 0 && target === 4) || (i === 4 && target === 0) ) // ← Evitar conexión directa 0-4
       ) {
         const peso = Math.floor(Math.random() * pipeRandomWeight) + 10;
         redAleatoria[i].conectar(redAleatoria[target], peso);
